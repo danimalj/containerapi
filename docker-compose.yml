@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:latest
+    container_name: dockdbtest_container
+    restart: always
+    environment:
+      POSTGRES_DB: dockdbtest
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - "C:/Users/dejol/Documents/postgress:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    container_name: fastapi_container
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

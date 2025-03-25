@@ -1,0 +1,23 @@
+CREATE TABLESPACE other LOCATION '/var/lib/postgresql/data';
+
+CREATE TABLE my_table (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    text_field TEXT,
+    created_at TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+    updated_at TIMESTAMPTZ,
+    updated_by TEXT
+) TABLESPACE other;
+
+CREATE OR REPLACE FUNCTION update_trigger_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = current_timestamp;
+    NEW.updated_by = current_user;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_trigger
+BEFORE UPDATE ON my_table
+FOR EACH ROW
+EXECUTE FUNCTION update_trigger_function();
