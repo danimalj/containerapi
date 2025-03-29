@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import psycopg2
@@ -6,13 +7,13 @@ from psycopg2.extras import RealDictCursor
 # Define the FastAPI app
 app = FastAPI()
 
-# Database connection settings
+# Database connection settings retrieved from environment variables
 DB_SETTINGS = {
-    "host": "db",  # The Docker service name of the PostgreSQL container
-    "port": 5432,
-    "database": "dockdbtest",
-    "user": "admin",
-    "password": "admin",
+    "host": os.environ["POSTGRES_HOST"],  # No default values provided
+    "port": int(os.environ["POSTGRES_PORT"]),
+    "database": os.environ["POSTGRES_DB"],
+    "user": os.environ["POSTGRES_USER"],
+    "password": os.environ["POSTGRES_PASSWORD"],
 }
 
 # Request model for inserting data
@@ -44,8 +45,6 @@ async def create_record(record: Record):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
-    
-    from typing import List, Optional
 
 @app.get("/records/{record_id}")
 async def get_record(record_id: str):
@@ -70,7 +69,6 @@ async def get_record(record_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
-
 @app.get("/records/")
 async def get_last_100_records():
     """
@@ -91,8 +89,6 @@ async def get_last_100_records():
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
-    
-from typing import Optional
 
 @app.put("/records/{record_id}")
 async def update_record(record_id: str, updated_text: str):
@@ -125,7 +121,7 @@ async def update_record(record_id: str, updated_text: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
-    
+
 @app.delete("/records/{record_id}")
 async def delete_record(record_id: str):
     """
