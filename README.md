@@ -1,4 +1,4 @@
-# Project Title
+# CONTAINERAPI
 
 This project sets up a fastapi apis and a postgres database.  Using docker-compose, it will create two api servers, an nginx load balancer, and a database server. It is intended to show how to create a simple load balanced api across containers that can be extended and deployed.
 
