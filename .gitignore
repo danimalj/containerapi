@@ -1,2 +1,6 @@
 .venv
 db
+__pycache__/
+*.pyc
+*.pyo
+routes/__pycache__/

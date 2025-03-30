@@ -6,24 +6,25 @@ ENV POSTGRES_DB=dockdbtest
 ENV POSTGRES_USER=admin
 
 # Install Python, pip, and required system dependencies
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev build-essential
+#RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev build-essential
 
 # Set the working directory for Python dependencies
 WORKDIR /app
 
 # Copy the requirements file and scripts into the container
-COPY postgres_requirements.txt /app/requirements.txt
-COPY ContainerDBCreateScript.sql /app/ContainerDBScripts.sql
-COPY create_db.py /app/create_db.py
-COPY entrypoint.sh /app/entrypoint.sh
+COPY ../db/create_users.sql /app/create_users.sql
+COPY ../db/create_tablespace.sql /app/create_tablespace.sql
+COPY ../db/create_my_table.sql /app/create_my_table.sql
+COPY ../db/create_modify_trigger_function.sql /app/create_modify_trigger_function.sql
+COPY ../db/entrypoint.sh /app/entrypoint.sh
 
 RUN chmod +x /app/entrypoint.sh
 
 # Create a Python virtual environment
-RUN python3 -m venv /app/venv
+#RUN python3 -m venv /app/venv
 
 # Activate the virtual environment and install dependencies
-RUN /app/venv/bin/pip install --no-cache-dir -r /app/requirements.txt
+#RUN /app/venv/bin/pip install --no-cache-dir -r /app/requirements.txt
 
 # Update PATH to use the virtual environment by default
 ENV PATH="/app/venv/bin:$PATH"

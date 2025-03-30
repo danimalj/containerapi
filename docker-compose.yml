@@ -1,9 +1,8 @@
-version: "3.9"
 services:
   postgres:
     build:
       context: .
-      dockerfile: Dockerfile.postgres
+      dockerfile: docker/Dockerfile.postgres
     container_name: dockdbtest_container
     restart: always
     environment:
@@ -18,11 +17,9 @@ services:
   fastapi_one:
     build:
       context: .
-      dockerfile: Dockerfile.fastapi
+      dockerfile: docker/Dockerfile.fastapi
     container_name: fastapi_one_container
     restart: always
-    ports:
-      - "8000:8000" # Maps FastAPI to host port 8000
     depends_on:
       - postgres
     environment:
@@ -31,15 +28,15 @@ services:
       POSTGRES_DB: dockdbtest
       POSTGRES_USER: api_one
       POSTGRES_PASSWORD: password_one
+    ports:
+      - "8000:8000"
 
   fastapi_two:
     build:
       context: .
-      dockerfile: Dockerfile.fastapi
+      dockerfile: docker/Dockerfile.fastapi
     container_name: fastapi_two_container
     restart: always
-    ports:
-      - "8001:8000" # Maps FastAPI to host port 8001
     depends_on:
       - postgres
     environment:
@@ -48,3 +45,17 @@ services:
       POSTGRES_DB: dockdbtest
       POSTGRES_USER: api_two
       POSTGRES_PASSWORD: password_two
+    ports:
+      - "8001:8000"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.nginx
+    container_name: nginx_load_balancer
+    restart: always
+    depends_on:
+      - fastapi_one
+      - fastapi_two
+    ports:
+      - "8080:80"
