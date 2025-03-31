@@ -26,24 +26,24 @@ until pg_isready -h localhost -p 5432 -U "$POSTGRES_USER"; do
   sleep 1
 done
 echo "PostgreSQL is ready!"
-
+sleep 5
 # Execute the SQL script through PostgreSQL
 echo "Running create_tablespace.sql..."
 psql -h localhost -p 5432 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "/app/create_tablespace.sql"
 echo "SQL create_tablespace.sql script executed successfully!"
-
+sleep 5
 echo "Running create_my_table.sql..."
 psql -h localhost -p 5432 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "/app/create_my_table.sql"
 echo "SQL ContainerDBCreateScript.sql script executed successfully!"
-
+sleep 5
 echo "Running create_modify_trigger_function.sql..."
 psql -h localhost -p 5432 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "/app/create_modify_trigger_function.sql"
 echo "SQL create_modify_trigger_function.sql script executed successfully!"
-
+sleep 5
 echo "Running create_trigger.sql..."
 psql -h localhost -p 5432 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "/app/create_trigger.sql"
 echo "SQL create_trigger.sql script executed successfully!"
-
+sleep 5
 echo "Running create_users.sql..."
 psql -h localhost -p 5432 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "/app/create_users.sql"
 echo "SQL create_users.sql script executed successfully!"
