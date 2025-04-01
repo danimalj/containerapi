@@ -15,6 +15,7 @@ WORKDIR /app
 COPY ../db/create_users.sql /app/create_users.sql
 COPY ../db/create_tablespace.sql /app/create_tablespace.sql
 COPY ../db/create_my_table.sql /app/create_my_table.sql
+COPY ../db/create_trigger.sql /app/create_trigger.sql
 COPY ../db/create_modify_trigger_function.sql /app/create_modify_trigger_function.sql
 COPY ../db/entrypoint.sh /app/entrypoint.sh
 
