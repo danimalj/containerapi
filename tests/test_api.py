@@ -154,3 +154,4 @@ def test_delete_records():
         deleted_record = data["data"]
         assert "id" in deleted_record  # Ensure the `id` key exists
         assert deleted_record["id"] == record_id  # Match the returned `id` with `record_id`
+
